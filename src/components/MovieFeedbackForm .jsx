@@ -91,126 +91,209 @@ function MovieFeedBackForm() {
     }
   }
 
-  // ---------- Return HTML ----------//
-  return (
-    <section>
-      <div className="bg-white p-10 rounded-2xl">
-        <h1>🎬 CineComment</h1>
-        {!isSubmit ? (
-          <form
-            action="#"
-            className="flex flex-col justify-start items-start mt-6 space-y-4"
-            onSubmit={handleSubmit}
-          >
-            <label htmlFor="name">ชื่อ</label>
-            <input
-              type="text"
-              id="name"
-              className="w-full h-10"
-              placeholder="กรุณากรอกชื่อของคุณ"
-              value={feedbackPost.name}
-              onChange={(e) => handleAddPost("name", e.target.value)}
-            />
-            {msgError.name ? (
-              <p className="text-sm font-medium text-red-600">
-                {msgError.name}
-              </p>
-            ) : (
-              <></>
-            )}
-            <label htmlFor="email">อีเมล</label>
-            <input
-              type="email"
-              id="email"
-              className="w-full h-10"
-              placeholder="example@email.com"
-              value={feedbackPost.email}
-              onChange={(e) => handleAddPost("email", e.target.value)}
-            />
-            {msgError.email ? (
-              <p className="text-sm font-medium text-red-600">
-                {msgError.email}
-              </p>
-            ) : (
-              <></>
-            )}
-            <label htmlFor="#">เลือกหนังที่คุณชอบ</label>
-            <div
-              className={`flex flex-col gap-5 w-full rounded-lg border p-4 ${
-                msgError.movie_title ? "border-red-500" : "border-gray-200"
-              }`}
-            >
-              <MovieLists
-                movieList={movieList}
-                selectMovie={selectMovie}
-                onSelect={handleSelectRadio}
-              />
-            </div>
-            {msgError.movie_title ? (
-              <p className="text-sm font-medium text-red-600">
-                {msgError.movie_title}
-              </p>
-            ) : (
-              <></>
-            )}
-            <label htmlFor="feedbackArea">ความคิดเห็นเกี่ยวกับหนัง</label>
-            <textarea
-              className="w-full h-max-28 h-28 border border-gray-200 p-3"
-              placeholder="พิมพ์ความคิดเห็นของคุณที่นี้..."
-              onChange={(e) => handleAddPost("feedback", e.target.value)}
-              value={feedbackPost.feedback}
-            ></textarea>
-            <br />
-            <div className="flex flex-row justify-between w-full">
-              <button type="button" onClick={handleReset}>
-                reset
-              </button>
-              <button type="Submit">ส่งแบบสำรวจ</button>
-            </div>
-          </form>
-        ) : (
-          <>
-            <div className="p-6">
-              <div className="flex flex-col justify-start items-start w-full p-10 rounded-lg bg-green-50 border border-green-200">
-                <h3 className="text-lg font-medium text-green-800 flex items-center gap-2 mb-4">
-                  ส่งแบบสำรวจสำเร็จ!
-                </h3>
-                <div className="grid grid-cols-2 gap-2">
-                  <p className="text-sm font-medium text-gray-500">ชื่อ:</p>
-                  <p>{feedbackPost.name}</p>
-                  <p className="text-sm font-medium text-gray-500">อีเมล:</p>
-                  <p>{feedbackPost.email}</p>
-                  <p className="text-sm font-medium text-gray-500">
-                    หนังที่เลือก:
-                  </p>
-                  <p>{feedbackPost.movie_title}</p>
-                </div>
-                <hr className="text-shadow-cyan-300 h-1.5" />
-                <div className="flex flex-col justify-center items-start w-full">
-                  <p className="text-sm font-medium text-gray-500">
-                    ความคิดเห็น:
-                  </p>
-                  <p className="text-sm bg-gray-50 p-3 rounded-md w-full py-3 text-left">
-                    {feedbackPost.feedback}
-                  </p>
-                </div>
-              </div>
-              <div className="pt-6">
-                <button
-                  type="button"
-                  onClick={() => window.location.reload()}
-                  className="flex flex-row gap-2 justify-center w-full"
-                >
-                  <RefreshCw />
-                  ทำแบบสำรวจใหม่
-                </button>
-              </div>
-            </div>
-          </>
-        )}
-      </div>
-    </section>
-  );
-}
+    // ---------- Return HTML ----------//
+    return (
+        <section className="min-h-screen bg-gray-50 flex items-center justify-center px-4 py-10">
+          <div className="w-full max-w-2xl">
+            {/* Card */}
+            <div className="bg-white border border-gray-200 rounded-3xl shadow-sm overflow-hidden">
+              {/* Header */}
+              <div className="px-8 py-7 border-b border-gray-100 bg-white">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <h1 className="text-3xl font-semibold tracking-tight text-gray-900">
+                      🎬 CineComment
+                    </h1>
+                    <p className="text-sm text-gray-500 mt-1">
+                      แบบสำรวจความเห็นเกี่ยวกับหนัง
+                    </p>
+                  </div>
+    
 
-export default MovieFeedBackForm;
+                </div>
+              </div>
+    
+              {/* Body */}
+              <div className="px-8 py-8">
+                {!isSubmit ? (
+                  <form
+                    action="#"
+                    className="flex flex-col gap-6"
+                    onSubmit={handleSubmit}
+                  >
+                    {/* Name */}
+                    <div>
+                      <label
+                        htmlFor="name"
+                        className="text-xl font-medium text-gray-800"
+                      >
+                        ชื่อ
+                      </label>
+                      <input
+                        type="text"
+                        id="name"
+                        className={`mt-2 w-full h-11 rounded-xl border px-4 text-gray-900 placeholder:text-gray-400 outline-none transition
+                        ${
+                          msgError.name
+                            ? "border-red-300 focus:border-red-400 focus:ring-2 focus:ring-red-100"
+                            : "border-gray-200 focus:border-gray-300 focus:ring-2 focus:ring-gray-100"
+                        }`}
+                        placeholder="กรุณากรอกชื่อของคุณ"
+                        value={feedbackPost.name}
+                        onChange={(e) => handleAddPost("name", e.target.value)}
+                      />
+                      {msgError.name && (
+                        <p className="mt-2 text-sm font-medium text-red-600">
+                          {msgError.name}
+                        </p>
+                      )}
+                    </div>
+    
+                    {/* Email */}
+                    <div>
+                      <label
+                        htmlFor="email"
+                        className="text-xl font-medium text-gray-800"
+                      >
+                        อีเมล
+                      </label>
+                      <input
+                        type="email"
+                        id="email"
+                        className={`mt-2 w-full h-11 rounded-xl border px-4 text-gray-900 placeholder:text-gray-400 outline-none transition
+                        ${
+                          msgError.email
+                            ? "border-red-300 focus:border-red-400 focus:ring-2 focus:ring-red-100"
+                            : "border-gray-200 focus:border-gray-300 focus:ring-2 focus:ring-gray-100"
+                        }`}
+                        placeholder="example@email.com"
+                        value={feedbackPost.email}
+                        onChange={(e) => handleAddPost("email", e.target.value)}
+                      />
+                      {msgError.email && (
+                        <p className="mt-2 text-sm font-medium text-red-600">
+                          {msgError.email}
+                        </p>
+                      )}
+                    </div>
+    
+                    {/* Movies */}
+                    <div>
+                      <label className="text-sm font-medium text-gray-800">
+                        เลือกหนังที่คุณชอบ
+                      </label>
+                      <div
+                        className={`mt-2 flex flex-col gap-3 w-full rounded-2xl border p-4 bg-white transition
+                        ${
+                          msgError.movie_title
+                            ? "border-red-300 ring-2 ring-red-50"
+                            : "border-gray-200"
+                        }`}
+                      >
+                        <MovieLists
+                          movieList={movieList}
+                          selectMovie={selectMovie}
+                          onSelect={handleSelectRadio}
+                        />
+                      </div>
+    
+                      {msgError.movie_title && (
+                        <p className="mt-2 text-sm font-medium text-red-600">
+                          {msgError.movie_title}
+                        </p>
+                      )}
+                    </div>
+    
+                    {/* Feedback */}
+                    <div>
+                      <label
+                        htmlFor="feedbackArea"
+                        className="text-sm font-medium text-gray-800"
+                      >
+                        ความคิดเห็นเกี่ยวกับหนัง
+                      </label>
+                      <textarea
+                        id="feedbackArea"
+                        className="mt-2 w-full min-h-[120px] rounded-2xl border border-gray-200 px-4 py-3 text-gray-900 placeholder:text-gray-400 outline-none transition focus:border-gray-300 focus:ring-2 focus:ring-gray-100"
+                        placeholder="พิมพ์ความคิดเห็นของคุณที่นี่..."
+                        onChange={(e) => handleAddPost("feedback", e.target.value)}
+                        value={feedbackPost.feedback}
+                      />
+                    </div>
+    
+                    {/* Actions */}
+                    <div className="flex items-center justify-end gap-3 pt-2">
+                      <button
+                        type="button"
+                        onClick={handleReset}
+                        className="h-11 px-5 rounded-xl border border-gray-200 text-gray-700 hover:bg-gray-50 transition"
+                      >
+                        ล้างข้อมูล
+                      </button>
+                      <button
+                        type="submit"
+                        className="h-11 px-6 rounded-xl bg-gray-900 text-white font-medium hover:bg-gray-800 transition"
+                      >
+                        ส่งแบบสำรวจ
+                      </button>
+                    </div>
+                  </form>
+                ) : (
+                  <div className="p-1">
+                    <div className="rounded-3xl border border-gray-200 bg-white p-8">
+                      <div className="flex items-start justify-between gap-4">
+                        <div>
+                          <h3 className="text-xl font-semibold text-gray-900">
+                            ✅ ส่งแบบสำรวจสำเร็จ!
+                          </h3>
+                          <p className="text-sm text-gray-500 mt-1">
+                            ขอบคุณสำหรับความคิดเห็นของคุณ
+                          </p>
+                        </div>
+                      </div>
+    
+                      <div className="mt-6 grid grid-cols-2 gap-y-3 gap-x-4 text-sm">
+                        <p className="font-medium text-gray-500">ชื่อ</p>
+                        <p className="text-gray-900">{feedbackPost.name}</p>
+    
+                        <p className="font-medium text-gray-500">อีเมล</p>
+                        <p className="text-gray-900">{feedbackPost.email}</p>
+    
+                        <p className="font-medium text-gray-500">หนังที่เลือก</p>
+                        <p className="text-gray-900">{feedbackPost.movie_title}</p>
+                      </div>
+    
+                      <div className="mt-6">
+                        <p className="text-sm font-medium text-gray-500">
+                          ความคิดเห็น
+                        </p>
+                        <div className="mt-2 rounded-2xl border border-gray-200 bg-gray-50 p-4 text-sm text-gray-900 whitespace-pre-wrap">
+                          {feedbackPost.feedback || "-"}
+                        </div>
+                      </div>
+    
+                      <div className="pt-6">
+                        <button
+                          type="button"
+                          onClick={() => window.location.reload()}
+                          className="h-11 w-full rounded-xl border border-gray-200 text-gray-800 hover:bg-gray-50 transition flex items-center justify-center gap-2"
+                        >
+                          <RefreshCw className="w-4 h-4" />
+                          ทำแบบสำรวจใหม่
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+    
+            {/* Footer small */}
+            <p className="text-center text-xs text-gray-400 mt-6">
+              © 2026 CineComment • Feedback Movie 
+            </p>
+          </div>
+        </section>
+      );
+    }
+    export default MovieFeedBackForm;
