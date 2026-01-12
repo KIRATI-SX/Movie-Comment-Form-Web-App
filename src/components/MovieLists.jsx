@@ -9,7 +9,7 @@ function MovieLists({ movieList, selectMovie, onSelect }) {
             key={`${index}-${movie.title}`}
             type="button"
             onClick={() => onSelect(movie.title)}
-            className={`group w-full rounded-2xl border px-4 py-3 text-left transition
+            className={`group w-full rounded-2xl border px-4 py-3 text-left transition-all duration-200 hover:scale-[1.02] active:scale-[0.97]
             ${
               active
                 ? "border-gray-900 bg-gray-50"
@@ -34,7 +34,8 @@ function MovieLists({ movieList, selectMovie, onSelect }) {
                   <span className="text-xs text-gray-500">{movie.year}</span>
                 </div>
                 <p className="text-xs text-gray-500 mt-1">
-                  Director: <span className="text-gray-700">{movie.director}</span>
+                  Director:{" "}
+                  <span className="text-gray-700">{movie.director}</span>
                 </p>
               </div>
             </div>
@@ -46,4 +47,3 @@ function MovieLists({ movieList, selectMovie, onSelect }) {
 }
 
 export default MovieLists;
-
