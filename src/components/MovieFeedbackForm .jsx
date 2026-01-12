@@ -1,8 +1,11 @@
 import { useState } from "react";
 import { RefreshCw } from "lucide-react";
 import { movies } from "/src/constants/movies.jsx";
+import { validatEmail } from "../utils/validation";
 function MovieFeedBackForm() {
+  // ---------- Declare Variable ----------//
   const [isSubmit, setIsSubmit] = useState(false);
+  const [autoValid, setAutoValid] = useState(false);
   const [movieList, setMovieList] = useState(movies);
   const [selectMovie, setSelectMovie] = useState("");
   const [feedbackPost, setFeedbackPost] = useState({
@@ -17,11 +20,14 @@ function MovieFeedBackForm() {
     movie_title: "",
   });
 
+  // ---------- Declare Function ----------//
   function handleAddPost(key, inputData) {
     let newFeedbackPost = { ...feedbackPost };
     newFeedbackPost[key] = inputData;
     setFeedbackPost(newFeedbackPost);
+    if (autoValid) validateForm(newFeedbackPost);
   }
+
   function handleReset() {
     setFeedbackPost({
       name: "",
@@ -30,16 +36,61 @@ function MovieFeedBackForm() {
       feedback: "",
     });
     setSelectMovie("");
+    setMsgError({
+      name: "",
+      email: "",
+      movie_title: "",
+    });
+    setAutoValid(false);
   }
+
   function handleSelectRadio(title) {
     setSelectMovie(title);
     handleAddPost("movie_title", title);
   }
 
+  function validateForm(formData) {
+    const data = formData || feedbackPost;
+    let error = false;
+    let newMsgError = {
+      name: "",
+      email: "",
+      movie_title: "",
+    };
+
+    if (data.name === "") {
+      newMsgError.name = "โปรดใส่ชื่อของคุณ";
+      error = true;
+    }
+
+    if (data.email === "") {
+      newMsgError.email = "โปรดใส่อีเมลของคุณ";
+      error = true;
+    } else {
+      if (!validatEmail(data.email)) {
+        newMsgError.email = "โปรดใส่อีเมลของคุณให้ถูกต้อง";
+        error = true;
+      }
+    }
+
+    if (data.movie_title === "") {
+      newMsgError.movie_title = "กรุณาเลือกหนังที่คุณชอบ";
+      error = true;
+    }
+    
+    setMsgError(newMsgError);
+    return error;
+  }
   function handleSubmit(e) {
     e.preventDefault();
-    setIsSubmit(true);
+    setAutoValid(true);
+    let error = validateForm(feedbackPost);
+    if (!error) {
+      setIsSubmit(true);
+    }
   }
+
+  // ---------- Return HTML ----------//
   return (
     <section>
       <div className="bg-white p-10 rounded-2xl">
@@ -59,6 +110,13 @@ function MovieFeedBackForm() {
               value={feedbackPost.name}
               onChange={(e) => handleAddPost("name", e.target.value)}
             />
+            {msgError.name ? (
+              <p className="text-sm font-medium text-red-600">
+                {msgError.name}
+              </p>
+            ) : (
+              <></>
+            )}
             <label htmlFor="email">อีเมล</label>
             <input
               type="email"
@@ -68,8 +126,19 @@ function MovieFeedBackForm() {
               value={feedbackPost.email}
               onChange={(e) => handleAddPost("email", e.target.value)}
             />
+            {msgError.email ? (
+              <p className="text-sm font-medium text-red-600">
+                {msgError.email}
+              </p>
+            ) : (
+              <></>
+            )}
             <label htmlFor="#">เลือกหนังที่คุณชอบ</label>
-            <div className="flex flex-col gap-5 w-full">
+            <div
+              className={`flex flex-col gap-5 w-full rounded-lg border p-4 ${
+                msgError.movie_title ? "border-red-500" : "border-gray-200"
+              }`}
+            >
               {movieList.map((movie, index) => (
                 <button
                   key={`${index}-${movie.title}`}
@@ -91,6 +160,13 @@ function MovieFeedBackForm() {
                 </button>
               ))}
             </div>
+            {msgError.movie_title ? (
+              <p className="text-sm font-medium text-red-600">
+                {msgError.movie_title}
+              </p>
+            ) : (
+              <></>
+            )}
             <label htmlFor="feedbackArea">ความคิดเห็นเกี่ยวกับหนัง</label>
             <textarea
               className="w-full h-max-28 h-28 border border-gray-200 p-3"
