@@ -2,6 +2,7 @@ import { useState } from "react";
 import { RefreshCw } from "lucide-react";
 import { movies } from "/src/constants/movies.jsx";
 import { validatEmail } from "../utils/validation";
+import MovieLists from "./MovieLists";
 function MovieFeedBackForm() {
   // ---------- Declare Variable ----------//
   const [isSubmit, setIsSubmit] = useState(false);
@@ -77,7 +78,7 @@ function MovieFeedBackForm() {
       newMsgError.movie_title = "กรุณาเลือกหนังที่คุณชอบ";
       error = true;
     }
-    
+
     setMsgError(newMsgError);
     return error;
   }
@@ -139,26 +140,11 @@ function MovieFeedBackForm() {
                 msgError.movie_title ? "border-red-500" : "border-gray-200"
               }`}
             >
-              {movieList.map((movie, index) => (
-                <button
-                  key={`${index}-${movie.title}`}
-                  type="button"
-                  className="flex flex-row justify-start items-center gap-3 w-full"
-                  onClick={() => handleSelectRadio(movie.title)}
-                >
-                  <input
-                    type="radio"
-                    name="selectMovie"
-                    value={movie.title}
-                    checked={selectMovie === movie.title}
-                    onChange={() => handleSelectRadio(movie.title)}
-                  />
-                  <div className="flex flex-col justify-start items-start ">
-                    <h2>{`${movie.title} (${movie.year})`}</h2>
-                    <p>Director: {movie.director}</p>
-                  </div>
-                </button>
-              ))}
+              <MovieLists
+                movieList={movieList}
+                selectMovie={selectMovie}
+                onSelect={handleSelectRadio}
+              />
             </div>
             {msgError.movie_title ? (
               <p className="text-sm font-medium text-red-600">
